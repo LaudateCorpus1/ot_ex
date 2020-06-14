@@ -5,5 +5,5 @@ defmodule Elixir.Rust.OT do
   def apply(_a, _b), do: :erlang.nif_error(:nif_not_loaded)
   def transform(_a, _b), do: :erlang.nif_error(:nif_not_loaded)
   def compose(_a, _b), do: :erlang.nif_error(:nif_not_loaded)
-  def compose_many(_a, _b), do: :erlang.nif_error(:nif_not_loaded)
+  def compose_many(_ops), do: :erlang.nif_error(:nif_not_loaded)
 end

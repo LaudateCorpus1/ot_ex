@@ -19,8 +19,8 @@ defmodule OT.Text.Composition do
     Elixir.Rust.OT.compose(op_a, op_b)
   end
 
-  @spec compose(Operation.t(), [Operation.t()]) :: {:ok, Operation.t()} | {:error, binary}
-  def compose_many(op_a, ops) do
-    Elixir.Rust.OT.compose_many(op_a, ops)
+  @spec compose_many([Operation.t()]) :: {:ok, Operation.t()} | {:error, binary}
+  def compose_many(ops) do
+    Elixir.Rust.OT.compose_many(ops)
   end
 end

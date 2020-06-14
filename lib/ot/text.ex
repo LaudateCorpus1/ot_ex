@@ -33,6 +33,7 @@ defmodule OT.Text do
   defdelegate apply(text, op), to: OT.Text.Application
   defdelegate apply!(text, op), to: OT.Text.Application
   defdelegate compose(op_a, op_b), to: OT.Text.Composition
+  defdelegate compose_many(ops), to: OT.Text.Composition
   defdelegate transform(op_a, op_b), to: OT.Text.Transformation
 
   @doc false

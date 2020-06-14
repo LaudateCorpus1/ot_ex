@@ -3,16 +3,23 @@ defmodule OT.Text.CompositionTest do
 
   doctest OT.Text.Composition
 
-  alias OT.Text.Composition
-
   require OT.Fuzzer
 
-  test "fuzz test" do
-    OT.Fuzzer.composition_fuzz(OT.Text, 1_000)
-  end
+  test "can compose many" do
+    op_a = [2, "a"]
+    op_b = [-1, 2, "b"]
+    op_c = [3, "c"]
+    operations = [op_a, op_b, op_c]
 
-  @tag :slow_fuzz
-  test "slow fuzz test" do
-    OT.Fuzzer.composition_fuzz(OT.Text, 10_000)
+    {:ok, res} = OT.Text.compose_many(operations)
+
+    res2 =
+      Enum.reduce(operations, fn el, acc ->
+        {:ok, comp} = OT.Text.compose(acc, el)
+        comp
+      end)
+
+    assert res == res2
+    assert res == [-1, 1, "abc"]
   end
 end

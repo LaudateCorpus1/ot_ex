@@ -86,13 +86,4 @@ defmodule OT.Text.TransformationTest do
     assert res == [1, "a", 4]
     assert {:ok, "bacdef"} == Application.apply("bcdef", res)
   end
-
-  test "fuzz test" do
-    OT.Fuzzer.transformation_fuzz(OT.Text, 1_000)
-  end
-
-  @tag :slow_fuzz
-  test "slow fuzz test" do
-    OT.Fuzzer.transformation_fuzz(OT.Text, 10_000)
-  end
 end

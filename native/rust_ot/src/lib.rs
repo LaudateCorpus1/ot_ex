@@ -72,12 +72,12 @@ fn compose<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> {
 }
 
 fn compose_many<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> {
-    let operation_a_arg: Vec<Operation> = args[0].decode()?;
-    let operation_b_arg: Vec<Vec<Operation>> = args[1].decode()?;
+    let mut operation_args: Vec<Vec<Operation>> = args[0].decode()?;
 
-    let mut final_result = OperationSeq::from_iter(operation_a_arg);
+    let operation_arg_a = operation_args.remove(0);
+    let mut final_result = OperationSeq::from_iter(operation_arg_a);
 
-    for op_arg in operation_b_arg {
+    for op_arg in operation_args {
         let new_op = OperationSeq::from_iter(op_arg);
 
         match final_result.compose(&new_op) {
@@ -95,7 +95,7 @@ rustler_export_nifs!(
         ("apply", 2, apply),
         ("transform", 2, transform),
         ("compose", 2, compose),
-        ("compose_many", 2, compose_many),
+        ("compose_many", 1, compose_many),
     ],
     None
 );
