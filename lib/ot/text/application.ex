@@ -24,18 +24,20 @@ defmodule OT.Text.Application do
   the operation applied to it. If the operation is invalid, an
   `{:error, atom}` tuple will be returned.
   ## Examples
-      iex> OT.Text.Application.apply("Foo", [3, %{i: " Bar"}])
+      iex> OT.Text.Application.apply("Foo", [3, " Bar"])
       {:ok, "Foo Bar"}
-      iex> OT.Text.Application.apply("Foo", [%{d: "Foos"}])
+      iex> OT.Text.Application.apply("Foo", [-4])
       {:error, "The operation's base length must be equal to the string's length. String length: 3, base length: 4"}
-
-  ## Errors
-  - `:delete_mismatch` A delete component did not match the text it would have
-    deleted in the text
-  - `:retain_too_long` A retain component skipped past the end of the text
   """
   @spec apply(Text.datum(), Operation.t()) :: apply_result
   def apply(text, op) do
     Elixir.Rust.OT.apply(text, op)
+  end
+
+  def apply!(text, op) do
+    case __MODULE__.apply(text, op) do
+      {:ok, text} -> text
+      {:error, error} -> raise error
+    end
   end
 end

@@ -12,8 +12,8 @@ defmodule OT.Text.Composition do
 
   ## Example
 
-      iex> OT.Text.Composition.compose([%{i: "Bar"}], [%{i: "Foo"}])
-      [%{i: "FooBar"}]
+      iex> OT.Text.Composition.compose(["Bar"], [3])
+      {:ok, ["Bar"]}
   """
   def compose(op_a, op_b) do
     Elixir.Rust.OT.compose(op_a, op_b)

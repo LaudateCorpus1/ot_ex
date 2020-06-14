@@ -31,6 +31,7 @@ defmodule OT.Text do
   def init, do: ""
 
   defdelegate apply(text, op), to: OT.Text.Application
+  defdelegate apply!(text, op), to: OT.Text.Application
   defdelegate compose(op_a, op_b), to: OT.Text.Composition
   defdelegate transform(op_a, op_b), to: OT.Text.Transformation
 
@@ -41,5 +42,26 @@ defmodule OT.Text do
     |> :crypto.strong_rand_bytes()
     |> Base.url_encode64()
     |> String.slice(0, length)
+  end
+
+  def random_op(code) do
+    type = [:insert, :retain, :delete] |> Enum.random()
+
+    retain = String.length(code)
+    [retain, do_random(type)]
+  end
+
+  defp do_random(type, length \\ 20)
+
+  defp do_random(:insert, length) do
+    :crypto.strong_rand_bytes(length) |> Base.url_encode64() |> binary_part(0, length)
+  end
+
+  defp do_random(:retain, length) do
+    :rand.uniform(length)
+  end
+
+  defp do_random(:delete, length) do
+    -:rand.uniform(length)
   end
 end

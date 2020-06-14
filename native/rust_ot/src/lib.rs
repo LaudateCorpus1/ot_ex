@@ -29,8 +29,8 @@ impl<'a> Encoder for OperationSeq {
 }
 
 fn apply<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> {
-    let operations: Vec<Operation> = args[0].decode()?;
-    let code: String = args[1].decode()?;
+    let code: String = args[0].decode()?;
+    let operations: Vec<Operation> = args[1].decode()?;
 
     let operation: OperationSeq = OperationSeq::from_iter(operations);
     let utf16_encoded_code = code.encode_utf16().collect();
