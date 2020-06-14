@@ -25,7 +25,7 @@ defmodule OT.Mixfile do
       homepage_url: @github_url,
       source_url: @github_url,
       docs: docs(),
-      compilers: [:rustler] ++ Mix.compilers(),
+      compilers: Mix.compilers(),
       rustler_crates: [rust_ot: []]
     ]
   end
