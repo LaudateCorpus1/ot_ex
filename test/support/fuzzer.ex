@@ -71,12 +71,10 @@ defmodule OT.Fuzzer do
         op_a = unquote(mod).random_op(initial_value)
         op_b = unquote(mod).random_op(initial_value)
 
-        IO.inspect(initial_value)
         IO.inspect(op_a)
         IO.inspect(op_b)
-
         # Transform the edits
-        {op_a_prime, op_b_prime} = unquote(mod).transform(op_a, op_b)
+        {:ok, op_a_prime, op_b_prime} = unquote(mod).transform(op_a, op_b)
 
         data_a =
           initial_value

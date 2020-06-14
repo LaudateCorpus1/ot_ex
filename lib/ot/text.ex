@@ -47,8 +47,18 @@ defmodule OT.Text do
   def random_op(code) do
     type = [:insert, :retain, :delete] |> Enum.random()
 
-    retain = String.length(code)
-    [retain, do_random(type)]
+    random = do_random(type)
+
+    retain =
+      case type do
+        :delete -> String.length(code) + random
+        _ -> String.length(code)
+      end
+
+    split = :rand.uniform(retain)
+    {s, s2} = String.split_at(code, split)
+
+    [String.length(s), do_random(type), String.length(s2)]
   end
 
   defp do_random(type, length \\ 20)

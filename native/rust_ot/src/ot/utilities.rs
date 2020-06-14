@@ -11,6 +11,7 @@ impl Default for Rng {
 }
 
 impl Rng {
+  #[allow(dead_code)]
   pub fn from_seed(seed: [u8; 32]) -> Self {
     Rng(StdRng::from_seed(seed))
   }

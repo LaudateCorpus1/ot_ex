@@ -515,7 +515,7 @@ impl OperationSeq {
 
     Ok(new_s)
   }
-
+  #[allow(dead_code)]
   /// Computes the inverse of an operation. The inverse of an operation is the
   /// operation that reverts the effects of the operation, e.g. when you have
   /// an operation 'insert("hello "); skip(6);' then the inverse is
@@ -542,7 +542,7 @@ impl OperationSeq {
     }
     inverse
   }
-
+  #[allow(dead_code)]
   /// Checks if this operation has no effect.
   pub fn is_noop(&self) -> bool {
     match self.ops.as_slice() {
@@ -551,18 +551,18 @@ impl OperationSeq {
       _ => false,
     }
   }
-
+  #[allow(dead_code)]
   /// Returns the length of a string these operations can be applied to
   pub fn base_len(&self) -> usize {
     self.base_len
   }
-
+  #[allow(dead_code)]
   /// Returns the length of the resulting string after the operations have
   /// been applied.
   pub fn target_len(&self) -> usize {
     self.target_len
   }
-
+  #[allow(dead_code)]
   /// Returns the wrapped sequence of operations.
   pub fn ops(&self) -> &Vec<Operation> {
     &self.ops
