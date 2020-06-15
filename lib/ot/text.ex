@@ -35,6 +35,7 @@ defmodule OT.Text do
   defdelegate compose(op_a, op_b), to: OT.Text.Composition
   defdelegate compose_many(ops), to: OT.Text.Composition
   defdelegate transform(op_a, op_b), to: OT.Text.Transformation
+  defdelegate transform_index(op, index), to: OT.Text.Transformation
 
   @doc false
   @spec init_random(non_neg_integer) :: datum

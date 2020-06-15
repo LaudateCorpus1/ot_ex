@@ -58,12 +58,21 @@ fn transform<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> {
     }
 }
 
+fn transform_index<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> {
+    let operation_a_arg: Vec<Operation> = args[0].decode()?;
+    let index: u64 = args[1].decode()?;
+
+    let operation_a = OperationSeq::from_iter(operation_a_arg);
+
+    return Ok((operation_a.transform_index(index)).encode(env));
+}
+
 fn compose<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> {
     let operation_a_arg: Vec<Operation> = args[0].decode()?;
     let operation_b_arg: Vec<Operation> = args[1].decode()?;
 
-    let operation_a: OperationSeq = OperationSeq::from_iter(operation_a_arg);
-    let operation_b: OperationSeq = OperationSeq::from_iter(operation_b_arg);
+    let operation_a = OperationSeq::from_iter(operation_a_arg);
+    let operation_b = OperationSeq::from_iter(operation_b_arg);
 
     match operation_a.compose(&operation_b) {
         Ok(composed_op) => Ok((atoms::ok(), composed_op).encode(env)),
@@ -94,8 +103,9 @@ rustler_export_nifs!(
     [
         ("apply", 2, apply),
         ("transform", 2, transform),
+        ("transform_index", 2, transform_index),
         ("compose", 2, compose),
-        ("compose_many", 1, compose_many),
+        ("compose_many", 1, compose_many)
     ],
     None
 );

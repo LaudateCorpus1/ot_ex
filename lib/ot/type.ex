@@ -28,4 +28,9 @@ defmodule OT.Type do
   """
   @callback transform(operation_a :: list, operation_b :: list) ::
               {:ok, list, list} | {:error, binary}
+
+  @doc """
+  Transform an index based on an operation.
+  """
+  @callback transform_index(operation_a :: list, index :: pos_integer()) :: pos_integer()
 end

@@ -94,7 +94,7 @@ pub mod serde;
 #[cfg(any(test, bench))]
 pub mod utilities;
 
-use std::{cmp::Ordering, error::Error, fmt, iter::FromIterator};
+use std::{cmp::min, cmp::Ordering, error::Error, fmt, iter::FromIterator};
 
 /// A single operation to be executed at the cursor's current position.
 #[derive(Debug, Clone, PartialEq)]
@@ -542,6 +542,28 @@ impl OperationSeq {
     }
     inverse
   }
+
+  /// Convert an index based on this operation. Useful for transposing a comment for example
+  pub fn transform_index(&self, index: u64) -> u64 {
+    let mut new_index = index;
+    let mut current_index = index as i64;
+    for op in &self.ops {
+      match op {
+        Operation::Retain(s) => current_index -= *s as i64,
+        Operation::Insert(s) => new_index += s.len() as u64,
+        Operation::Delete(s) => {
+          new_index -= min(current_index, *s as i64) as u64;
+          current_index += *s as i64;
+        }
+      }
+      if current_index < 0 {
+        break;
+      }
+    }
+
+    return new_index;
+  }
+
   #[allow(dead_code)]
   /// Checks if this operation has no effect.
   pub fn is_noop(&self) -> bool {
@@ -660,6 +682,36 @@ mod tests {
     o1.delete(1);
     o2.retain(1);
     assert_ne!(o1, o2);
+  }
+
+  #[test]
+  fn transform_insert_index() {
+    let mut o1 = OperationSeq::default();
+    o1.retain(20);
+    o1.insert(&convert_utf16!("lo"));
+    o1.retain(2);
+
+    assert_eq!(o1.transform_index(20), 22)
+  }
+
+  #[test]
+  fn transform_retain_index() {
+    let mut o1 = OperationSeq::default();
+    o1.retain(20);
+    o1.insert(&convert_utf16!("lo"));
+    o1.retain(2);
+
+    assert_eq!(o1.transform_index(18), 18)
+  }
+
+  #[test]
+  fn transform_delete_index() {
+    let mut o1 = OperationSeq::default();
+    o1.delete(5);
+    o1.insert(&convert_utf16!("ABCDEF"));
+    o1.retain(2);
+
+    assert_eq!(o1.transform_index(5), 6)
   }
 
   #[test]

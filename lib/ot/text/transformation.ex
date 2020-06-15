@@ -34,4 +34,8 @@ defmodule OT.Text.Transformation do
   def transform(op_a, op_b) do
     Elixir.Rust.OT.transform(op_a, op_b)
   end
+
+  def transform_index(op, index) do
+    Elixir.Rust.OT.transform_index(op, index)
+  end
 end
