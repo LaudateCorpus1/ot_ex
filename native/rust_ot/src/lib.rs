@@ -18,13 +18,13 @@ mod atoms {
 
 impl<'a> Decoder<'a> for Operation {
     fn decode(term: Term<'a>) -> Result<Operation, rustler::Error> {
-        return Ok(from_term(term).unwrap());
+        Ok(from_term(term).unwrap())
     }
 }
 
 impl<'a> Encoder for OperationSeq {
     fn encode<'b>(&self, env: Env<'b>) -> Term<'b> {
-        return to_term(env, self).unwrap();
+        to_term(env, self).unwrap()
     }
 }
 
@@ -33,7 +33,7 @@ fn apply<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> {
     let operations: Vec<Operation> = args[1].decode()?;
 
     let operation: OperationSeq = OperationSeq::from_iter(operations);
-    let utf16_encoded_code = code.encode_utf16().collect();
+    let utf16_encoded_code = code.encode_utf16().collect::<Vec<u16>>();
 
     let result = operation.apply(&utf16_encoded_code);
 
@@ -41,7 +41,7 @@ fn apply<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> {
         Ok(encoded_result) => {
             Ok((atoms::ok(), String::from_utf16_lossy(&encoded_result)).encode(env))
         }
-        Err(err) => Ok(((atoms::error(), format!("{}", err))).encode(env)),
+        Err(err) => Ok((atoms::error(), format!("{}", err)).encode(env)),
     }
 }
 
@@ -64,7 +64,7 @@ fn transform_index<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Erro
 
     let operation_a = OperationSeq::from_iter(operation_a_arg);
 
-    return Ok((operation_a.transform_index(index)).encode(env));
+    Ok((operation_a.transform_index(index)).encode(env))
 }
 
 fn compose<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> {
@@ -95,7 +95,7 @@ fn compose_many<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> 
         }
     }
 
-    return Ok((atoms::ok(), final_result).encode(env));
+    Ok((atoms::ok(), final_result).encode(env))
 }
 
 rustler_export_nifs!(

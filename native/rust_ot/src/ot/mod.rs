@@ -319,18 +319,18 @@ impl OperationSeq {
   }
 
   /// Inserts a `s` at the current cursor position.
-  pub fn insert(&mut self, s: &Vec<u16>) {
+  pub fn insert(&mut self, s: &[u16]) {
     if s.is_empty() {
       return;
     }
     self.target_len += s.len();
     let new_last = match self.ops.as_mut_slice() {
       [.., Operation::Insert(s_last)] => {
-        &s_last.extend(s);
+        s_last.extend(s);
         return;
       }
       [.., Operation::Insert(s_pre_last), Operation::Delete(_)] => {
-        &s_pre_last.extend(s);
+        s_pre_last.extend(s);
         return;
       }
       [.., op_last @ Operation::Delete(_)] => {
@@ -488,7 +488,7 @@ impl OperationSeq {
   ///
   /// Returns an error if the operation cannot be applied due to length
   /// conflicts.
-  pub fn apply(&self, s: &Vec<u16>) -> Result<Vec<u16>, OTError> {
+  pub fn apply(&self, s: &[u16]) -> Result<Vec<u16>, OTError> {
     let str_length = s.len();
     if str_length != self.base_len {
       return Err(OTError::OperationApplyMismatch(str_length, self.base_len));
@@ -521,7 +521,7 @@ impl OperationSeq {
   /// an operation 'insert("hello "); skip(6);' then the inverse is
   /// 'delete("hello "); skip(6);'. The inverse should be used for
   /// implementing undo.
-  pub fn invert(&self, s: &Vec<u16>) -> Self {
+  pub fn invert(&self, s: &[u16]) -> Self {
     let mut inverse = OperationSeq::default();
     let chars = &mut s.iter().cloned();
     for op in self.ops.iter() {
@@ -561,7 +561,7 @@ impl OperationSeq {
       }
     }
 
-    return new_index;
+    new_index
   }
 
   #[allow(dead_code)]
