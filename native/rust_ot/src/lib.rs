@@ -32,7 +32,7 @@ fn apply<'a>(env: Env<'a>, args: &[Term<'a>]) -> Result<Term<'a>, Error> {
     let code: String = args[0].decode()?;
     let operations: Vec<Operation> = args[1].decode()?;
 
-    let operation: OperationSeq = OperationSeq::from_iter(operations);
+    let operation = OperationSeq::from_iter(operations);
     let utf16_encoded_code = code.encode_utf16().collect::<Vec<u16>>();
 
     let result = operation.apply(&utf16_encoded_code);

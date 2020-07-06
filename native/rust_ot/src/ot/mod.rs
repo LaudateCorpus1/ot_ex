@@ -598,7 +598,7 @@ mod tests {
 
   macro_rules! convert_utf16 {
     ($e:expr) => {
-      $e.encode_utf16().collect();
+      $e.encode_utf16().collect::<Vec<u16>>();
     };
   }
 
