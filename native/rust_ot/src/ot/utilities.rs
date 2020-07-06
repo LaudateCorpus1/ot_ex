@@ -24,7 +24,7 @@ impl Rng {
       .collect()
   }
 
-  pub fn gen_operation_seq(&mut self, s: &Vec<u16>) -> OperationSeq {
+  pub fn gen_operation_seq(&mut self, s: &[u16]) -> OperationSeq {
     let mut op = OperationSeq::default();
     loop {
       let left = s.len() - op.base_len();
