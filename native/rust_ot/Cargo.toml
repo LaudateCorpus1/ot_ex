@@ -10,10 +10,10 @@ path = "src/lib.rs"
 crate-type = ["dylib"]
 
 [dependencies]
-rustler = { version = "0.21.1" }
+rustler = { version = "0.22.2" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0" }
-serde_rustler = { git = "https://github.com/sunny-g/serde_rustler", rev = "283e41b" }
+serde_rustler = { git = "https://github.com/codesandbox/serde_rustler", branch = "update_rustler_again" }
 
 [dev-dependencies]
 rand = { version = "0.7.3" }

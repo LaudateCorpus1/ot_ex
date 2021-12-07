@@ -45,9 +45,9 @@ defmodule OT.Mixfile do
       {:dialyxir, "~> 0.4", only: [:dev], runtime: false},
       {:credo, "~> 0.8", only: [:dev, :test]},
       {:benchee, "~> 1.0", only: [:dev, :test]},
-      {:jason, "~> 1.0", only: [:dev, :test]},
+      {:jason, "~> 1.2"},
       {:mix_test_watch, "~> 1.0", only: [:dev, :test]},
-      {:rustler, github: "rusterlium/rustler", ref: "e343b8ca", sparse: "rustler_mix"}
+      {:rustler, "~> 0.22.2"}
     ]
   end
 
